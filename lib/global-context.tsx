@@ -1,7 +1,5 @@
 import { createContext, useContext } from "react";
 import { ReactNode } from "react";
-import { useAppwrite } from "./useAppwrite";
-import { getUser } from "./appwrite";
 
 interface User {
     $id: string,
@@ -11,25 +9,32 @@ interface User {
 }
 
 interface GlobalContextType {
-    isLoggedIn : boolean,
+    isLoggedIn: boolean,
     user: User | null,
     loading: boolean,
     refetch: () => void
 }
 
-const GlobalContext = createContext<GlobalContextType | undefined>( undefined )
+const GlobalContext = createContext<GlobalContextType | undefined>(undefined)
 
 interface childerProps {
     children: ReactNode
 }
 
-export const GlobalProvider = ({children}: childerProps) => {
-    const {data: user, loading, refetch} = useAppwrite({fn: getUser})
-    console.log(JSON.stringify(user, null, 2));
-    
-    const isLoggedIn = !!user
+export const GlobalProvider = ({ children }: childerProps) => {
+    // Demo user — no auth required
+    const user: User = {
+        $id: "demo-user-1",
+        name: "John Doe",
+        email: "john.doe@example.com",
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=200&auto=format&fit=crop",
+    };
+    const loading = false;
+    const refetch = () => { };
+
+    const isLoggedIn = true;
     return (
-        <GlobalContext.Provider value={{isLoggedIn, user, loading, refetch}}>
+        <GlobalContext.Provider value={{ isLoggedIn, user, loading, refetch }}>
             {children}
         </GlobalContext.Provider>
     )
@@ -37,7 +42,7 @@ export const GlobalProvider = ({children}: childerProps) => {
 
 export const useGlobalContext = (): GlobalContextType => {
     const context = useContext(GlobalContext)
-    if(!context) throw new Error('must used within a global provider')
+    if (!context) throw new Error('must used within a global provider')
     return context;
 }
 

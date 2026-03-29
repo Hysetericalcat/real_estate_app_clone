@@ -1,21 +1,27 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, ImageSourcePropType, Alert } from 'react-native'
 import React from 'react'
-import { useClerk, useUser } from '@clerk/clerk-expo'
-import * as Linking from 'expo-linking'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import icons from '@/constants/icons'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { settings } from '@/constants/data'
+import { router } from 'expo-router'
+
+// Demo user for showcase
+const demoUser = {
+  fullName: "John Doe",
+  email: "john.doe@example.com",
+  imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=200&auto=format&fit=crop",
+};
 
 interface SettingsProps {
   icon: ImageSourcePropType,
   title: string,
-  onPress?: ()=> void,
+  onPress?: () => void,
   textStyle?: string,
   showArrow?: boolean
 }
 
-const SettingsItem = ({icon, title, onPress, textStyle, showArrow }: SettingsProps) => {
+const SettingsItem = ({ icon, title, onPress, textStyle, showArrow }: SettingsProps) => {
   return (
     <TouchableOpacity className='flex flex-row items-center justify-between py-3' onPress={onPress}>
       <View className='flex flex-row items-center gap-3'>
@@ -37,22 +43,10 @@ const SettingsItem = ({icon, title, onPress, textStyle, showArrow }: SettingsPro
 }
 
 const Profile = () => {
-  const { signOut } = useClerk()
-
-  const {user} = useUser()
-  console.log();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut()
-      Linking.openURL(Linking.createURL('/'))
-      Alert.alert('You have been logged out successfully !')
-    } catch (err) {
-      Alert.alert('Log out failed', JSON.stringify(err))
-      console.error(JSON.stringify(err, null, 2))
-    }
+  const handleLogout = () => {
+    router.replace('/')
   }
-  
+
   return (
     <SafeAreaView className='h-full bg-white'>
       <ScrollView contentContainerClassName='pb-32 px-7' showsVerticalScrollIndicator={false}>
@@ -66,8 +60,7 @@ const Profile = () => {
         <View className='flex flex-row mt-5 justify-center'>
           <View className='flex flex-col mt-5 items-center'>
             <Image
-              // TODO:error handling in image
-              source={{uri: user?.imageUrl}}
+              source={{ uri: demoUser.imageUrl }}
               className='w-44 h-44 rounded-full border border-black-100'
             />
             <TouchableOpacity className='absolute bottom-16 right-6 bg-white rounded-full p-1'>
@@ -77,8 +70,8 @@ const Profile = () => {
                 color={'#ffc918'}
               />
             </TouchableOpacity>
-            <Text className='text-2xl font-rubik-bold mt-4'>{user?.fullName}</Text>
-            <Text className='text-md text-black-200 font-rubik'>{user?.emailAddresses[0].emailAddress}</Text>
+            <Text className='text-2xl font-rubik-bold mt-4'>{demoUser.fullName}</Text>
+            <Text className='text-md text-black-200 font-rubik'>{demoUser.email}</Text>
           </View>
         </View>
         <View className="flex flex-col mt-10">
@@ -87,15 +80,15 @@ const Profile = () => {
         </View>
         <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
           {settings.slice(2).map((item, index) => (
-            <SettingsItem key={index} {...item} showArrow={true}/>
+            <SettingsItem key={index} {...item} showArrow={true} />
           ))}
         </View>
 
         <View className='flex flex-col border-t mt-5 pt-5 border-blue-100'>
           <SettingsItem
             icon={icons.logout}
-            title='log out'
-            onPress={handleSignOut}
+            title='Log Out'
+            onPress={handleLogout}
             textStyle='font-rubik-semibold'
             showArrow={false}
           />

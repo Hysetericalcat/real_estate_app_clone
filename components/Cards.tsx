@@ -2,18 +2,18 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import images from '@/constants/images'
 import icons from '@/constants/icons'
-import { Models } from 'react-native-appwrite'
+import { Property } from '@/lib/data'
 
 interface Props {
-  item: Models.Document
-  onPress?: ()=>void
+  item: Property
+  onPress?: () => void
 }
 
-export const FeaturedCards = ({item: {name, address, price, image, rating}, onPress}: Props) => {
+export const FeaturedCards = ({ item: { name, address, price, image, rating }, onPress }: Props) => {
   return (
     <TouchableOpacity onPress={onPress} className='flex h-80 w-60 flex-col items-start relative mx-1'>
       <Image
-        source={{uri: image}}
+        source={{ uri: image }}
         className='size-full rounded-2xl'
       />
       <Image
@@ -43,9 +43,9 @@ export const FeaturedCards = ({item: {name, address, price, image, rating}, onPr
   )
 }
 
-export const Card = ({item: {name, address, price, image, rating},onPress}: Props) => {
-    return (
-      <TouchableOpacity
+export const Card = ({ item: { name, address, price, image, rating }, onPress }: Props) => {
+  return (
+    <TouchableOpacity
       className="flex-1 my-2 px-3 py-2 h-72 rounded-lg bg-white shadow-xl mx-2 shadow-black relative"
       onPress={onPress}
     >
@@ -56,7 +56,7 @@ export const Card = ({item: {name, address, price, image, rating},onPress}: Prop
         </Text>
       </View>
 
-      <Image source={{uri: image}} className="w-full h-40 rounded-lg" />
+      <Image source={{ uri: image }} className="w-full h-40 rounded-lg" />
 
       <View className="flex flex-col mt-2">
         <Text className="text-base font-rubik-bold text-black-300">
@@ -78,7 +78,7 @@ export const Card = ({item: {name, address, price, image, rating},onPress}: Prop
         </View>
       </View>
     </TouchableOpacity>
-    )
+  )
 }
 
 export default FeaturedCards;

@@ -1,10 +1,10 @@
 import { View, Text, Image } from "react-native";
 
 import icons from "@/constants/icons";
-import { Models } from "react-native-appwrite";
+import { Review } from "@/lib/data";
 
 interface Props {
-  item: Models.Document;
+  item: Review;
 }
 
 const Comment = ({ item }: Props) => {
@@ -27,7 +27,7 @@ const Comment = ({ item }: Props) => {
             source={icons.heart}
             className="size-5"
             tintColor={"red"}
-            
+
           />
           <Text className="text-black-300 text-sm font-rubik-medium ml-2">
             12

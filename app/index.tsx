@@ -1,51 +1,9 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import {useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import images from '@/constants/images'
-import icons from '@/constants/icons'
-import * as WebBrowser from 'expo-web-browser'
-import { Redirect } from 'expo-router'
-import { useAuth, useOAuth  } from '@clerk/clerk-expo'
-import * as Linking from 'expo-linking'
-// browser warm up 
-export const useWarmUpBrowser = () => {
-  useEffect(() => {
-    return () => {
-      void WebBrowser.coolDownAsync()
-    }
-  }, [])
-}
-
-WebBrowser.maybeCompleteAuthSession()
+import { Redirect, router } from 'expo-router'
 
 export default function Index() {
-  useWarmUpBrowser()
-  const { isSignedIn } = useAuth()
-  console.log("🚀 ~ Index ~ isSignedIn:", isSignedIn)
-  if (isSignedIn) {
-    return <Redirect href={'/home'} />
-  }
-
-  const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google' })
- const Login = async () => {
-
-    try {
-      const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
-        redirectUrl: Linking.createURL('/', { scheme: 'estate-sphere' }),
-      })
-      if (createdSessionId) {
-        setActive!({ session: createdSessionId })
-        return true
-      } else {
-        throw new Error('failed to open session')
-      }
-    } catch (err) {
-      console.error(JSON.stringify(err, null, 2))
-      return false
-    }
-  }
-
-
   return (
     <SafeAreaView className="bg-white h-full">
       <View className='h-full'>
@@ -66,21 +24,16 @@ export default function Index() {
           </Text>
 
           <Text className="text-lg font-rubik text-black-200 text-center mt-4">
-            Login to estate sphere with Google
+            Discover premium properties around the world
           </Text>
 
           <TouchableOpacity
-            onPress={Login}
-            className="bg-white shadow-md shadow-black-400 rounded-full w-full py-4 mt-2"
+            onPress={() => router.push('/home')}
+            className="bg-primary-300 shadow-md shadow-primary-300 rounded-full w-full py-4 mt-5"
           >
             <View className="flex flex-row items-center justify-center">
-              <Image
-                source={icons.google}
-                className="w-5 h-5"
-                resizeMode="contain"
-              />
-              <Text className="text-lg font-rubik-medium text-black-300 ml-2">
-                Continue with Google
+              <Text className="text-lg font-rubik-bold text-white ml-2">
+                Explore Properties
               </Text>
             </View>
           </TouchableOpacity>
@@ -89,5 +42,4 @@ export default function Index() {
       </View>
     </SafeAreaView>
   );
-  
 }
