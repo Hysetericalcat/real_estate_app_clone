@@ -1,45 +1,47 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import images from '@/constants/images'
-import { Redirect, router } from 'expo-router'
+import { router } from 'expo-router'
+import { categories } from '@/lib/inventory-data'
+import CategoryCard from '@/components/CategoryCard'
 
 export default function Index() {
   return (
     <SafeAreaView className="bg-white h-full">
-      <View className='h-full'>
-        <Image
-          source={images.onboarding}
-          className="w-full h-4/6"
-          resizeMode="contain"
-        />
+      <StatusBar barStyle="dark-content" />
+      <FlatList
+        data={categories}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="px-5 pb-10"
+        renderItem={({ item }) => (
+          <CategoryCard
+            item={item}
+            onPress={() => router.push(`/(root)/projects/${item.id}` as any)}
+          />
+        )}
+        ListHeaderComponent={() => (
+          <View className="mt-6 mb-6">
+            <View className="flex flex-row items-center mb-1">
+              <Text className="text-3xl font-rubik-bold text-black-300">
+                Estate Sphere
+              </Text>
+              <Text className="text-2xl ml-2">🏗️</Text>
+            </View>
+            <Text className="text-base font-rubik text-black-100">
+              Property Inventory • Indore, MP
+            </Text>
 
-        <View className="px-10">
-          <Text className="text-base text-center uppercase font-rubik text-black-200">
-            Welcome To Estate Sphere
-          </Text>
-
-          <Text className="text-2xl font-rubik-bold text-black-300 text-center mt-2">
-            Let's Get You Closer To {"\n"}
-            <Text className="text-primary-300">Your Ideal Home</Text>
-          </Text>
-
-          <Text className="text-lg font-rubik text-black-200 text-center mt-4">
-            Discover premium properties around the world
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => router.push('/home')}
-            className="bg-primary-300 shadow-md shadow-primary-300 rounded-full w-full py-4 mt-5"
-          >
-            <View className="flex flex-row items-center justify-center">
-              <Text className="text-lg font-rubik-bold text-white ml-2">
-                Explore Properties
+            <View className="mt-5 bg-accent-100 rounded-2xl px-5 py-4 border border-primary-200">
+              <Text className="text-sm font-rubik-medium text-black-300">
+                📊 Browse Categories
+              </Text>
+              <Text className="text-xs font-rubik text-black-100 mt-1">
+                Select a category to explore available projects and units in Indore, Madhya Pradesh
               </Text>
             </View>
-          </TouchableOpacity>
-          <Text className='text-center mt-4 text-sm font-rubik-light'>&#x22C6; Developed By Binary-Shade &#x22C6;</Text>
-        </View>
-      </View>
+          </View>
+        )}
+      />
     </SafeAreaView>
-  );
+  )
 }
