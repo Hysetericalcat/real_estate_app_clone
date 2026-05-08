@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Property = require('./models/Property');
 const Lead = require('./models/Lead');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://akshat124b:Akshat%403624@cluster0.hym7t.mongodb.net/estate-sphere?appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI';
 
 const properties = [
     // ===== HOUSES =====
