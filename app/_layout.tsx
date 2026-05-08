@@ -1,13 +1,13 @@
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 import './global.css'
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import React, { useEffect } from "react";
+import { StatusBar } from "react-native";
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-
   const [loaded, error] = useFonts({
     'Rubik-Bold': require('../assets/fonts/Rubik-Bold.ttf'),
     'Rubik-ExtraBold': require('../assets/fonts/Rubik-ExtraBold.ttf'),
@@ -25,5 +25,13 @@ export default function RootLayout() {
 
   if (!loaded && !error) return null;
 
-  return <Slot />
+  return (
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#0a0a1a" />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0a0a1a' } }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(root)" />
+      </Stack>
+    </>
+  );
 }
