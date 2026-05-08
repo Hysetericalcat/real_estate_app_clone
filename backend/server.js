@@ -8,8 +8,7 @@ const leadsRouter = require('./routes/leads');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://akshat124b:Akshat%403624@cluster0.hym7t.mongodb.net/estate-sphere?appName=Cluster0';
-
+const MONGO_URI = process.env.MONGO_URI;
 // Middleware
 app.use(cors());
 app.use(express.json());
